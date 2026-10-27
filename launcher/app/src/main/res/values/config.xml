@@ -225,6 +225,15 @@
     <!-- Keep the screen on while music or video is playing, so the sleep timer and screensaver wait
          until playback stops. Off by default; a theme can set stay_awake_while_playing. -->
     <bool name="stay_awake_while_playing">false</bool>
+    <!-- Settings as a round icon while Wi-Fi keeps its label. Off by default; a theme can set
+         settings_icon_only. icon_only_buttons already makes both icon-only. -->
+    <bool name="settings_icon_only">false</bool>
+    <!-- Inputs as a round icon. Off by default; a theme can set inputs_icon_only. icon_only_buttons
+         leaves Inputs labelled. -->
+    <bool name="inputs_icon_only">false</bool>
+    <!-- Left-to-right order of the top pills: wifi, settings, inputs, reorder, library, comma-separated.
+         Empty keeps the built-in order. A theme can set top_button_order. -->
+    <string name="top_button_order" translatable="false"></string>
     <!-- The app library as a round button in the top bar, beside Settings (app_library must be on too). -->
     <bool name="library_button">false</bool>
     <!-- With icon_only_buttons: keep the network name on the Wi-Fi pill up to this width in dp, cut with an ellipsis.

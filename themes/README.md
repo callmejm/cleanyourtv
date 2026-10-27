@@ -60,6 +60,9 @@ A new key needs one there in the same pull request.
 | `icon_only_buttons` | bool | Wi-Fi and Settings as round icon buttons; Inputs keeps its label (`false` by default) |
 | `icon_only_inputs` | bool | The Inputs pill as a round icon button too, its label kept as the TalkBack description (`false` by default). Works with or without `icon_only_buttons` |
 | `stay_awake_while_playing` | bool | Keep the screen on while music or video is playing (`false` by default). The screensaver still runs when nothing is playing |
+| `settings_icon_only` | bool | Settings as a round icon while Wi-Fi keeps its label (`false` by default). `icon_only_buttons` already makes both icon-only |
+| `inputs_icon_only` | bool | Inputs as a round icon (`false` by default). `icon_only_buttons` leaves Inputs labelled |
+| `top_button_order` | string | Left-to-right pill order, comma-separated (`wifi`, `settings`, `inputs`, `reorder`, `library`). Empty keeps the built-in order |
 | `top_menu` | bool | Inputs, Wi-Fi and Settings folded into one round gear, centred on the header: OK drops a menu with the three plus Reorder apps, hold OK keeps the launcher menu (`false` by default) |
 | `launcher_settings_button` | bool | Make the header Settings action open Launcher settings directly with a matching 22dp home icon; also changes the Settings row when `top_menu` is on. Hold OK keeps module-card and ordering tools. The settings page includes Reorder apps and TV settings (`false` by default) |
 | `wifi_status_color` | bool | The Wi-Fi pill's icon green while the TV is online, white while it is not (`false` by default) |

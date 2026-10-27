@@ -114,6 +114,12 @@ final class Config {
     final boolean iconOnlyInputs;
     /** Keep the screen on while music or video plays (config.xml stay_awake_while_playing). */
     final boolean stayAwakeWhilePlaying;
+    /** Settings as a round icon while Wi-Fi keeps its label (config.xml settings_icon_only). */
+    final boolean settingsIconOnly;
+    /** Inputs as a round icon (config.xml inputs_icon_only). */
+    final boolean inputsIconOnly;
+    /** Left-to-right top pill order, comma-separated. Empty keeps the built-in order (config.xml top_button_order). */
+    final String topButtonOrder;
     /** App library as a round button in the top bar (config.xml library_button); needs app_library. */
     final boolean libraryButton;
     /** With icon_only_buttons, the Wi-Fi pill keeps the network name up to this width in dp (0: icon only). */
@@ -224,8 +230,8 @@ final class Config {
                    List<RaceWeekend.Race> raceCalendar, boolean cinematicHome, boolean ambientGlow, boolean appGlow, boolean fadeRows, int homeIdleClockMinutes,
                    boolean keyFilter, boolean dockGlass, String glowStyle, boolean wallpaperCaptions,
                    boolean handleViewInputs, boolean tileMenu, boolean dockEvenPadding, boolean cinematicDots, boolean cinematicWhiteFocus, boolean wifiStatusColor, int cinematicScrim, int cinematicArt,
-                   Map<String, Set<String>> wallpaperMoods, boolean gamepadPassthrough, boolean stayAwakeWhilePlaying,
-                   List<String> appOffPackages) {
+                   Map<String, Set<String>> wallpaperMoods, boolean gamepadPassthrough, boolean settingsIconOnly, boolean inputsIconOnly,
+                   String topButtonOrder, boolean stayAwakeWhilePlaying, List<String> appOffPackages) {
         this.handleViewInputs = handleViewInputs;
         this.tileMenu = tileMenu;
         this.appOffPackages = Collections.unmodifiableList(appOffPackages);
@@ -268,6 +274,9 @@ final class Config {
         this.iconOnlyButtons = iconOnlyButtons;
         this.iconOnlyInputs = iconOnlyInputs;
         this.stayAwakeWhilePlaying = stayAwakeWhilePlaying;
+        this.settingsIconOnly = settingsIconOnly;
+        this.inputsIconOnly = inputsIconOnly;
+        this.topButtonOrder = topButtonOrder;
         this.libraryButton = libraryButton;
         this.wifiLabelWidth = wifiLabelWidth;
         this.alwaysShowNames = alwaysShowNames;
@@ -358,6 +367,9 @@ final class Config {
         boolean iconOnlyButtons = res.getBoolean(R.bool.icon_only_buttons);
         boolean iconOnlyInputs = res.getBoolean(R.bool.icon_only_inputs);
         boolean stayAwakeWhilePlaying = res.getBoolean(R.bool.stay_awake_while_playing);
+        boolean settingsIconOnly = res.getBoolean(R.bool.settings_icon_only);
+        boolean inputsIconOnly = res.getBoolean(R.bool.inputs_icon_only);
+        String topButtonOrder = res.getString(R.string.top_button_order);
         boolean libraryButton = res.getBoolean(R.bool.library_button);
         int wifiLabelWidth = res.getInteger(R.integer.wifi_label_width);
         boolean alwaysShowNames = res.getBoolean(R.bool.always_show_names);
@@ -439,6 +451,9 @@ final class Config {
             iconOnlyButtons = bool(json, "icon_only_buttons", iconOnlyButtons);
             iconOnlyInputs = bool(json, "icon_only_inputs", iconOnlyInputs);
             stayAwakeWhilePlaying = bool(json, "stay_awake_while_playing", stayAwakeWhilePlaying);
+            settingsIconOnly = bool(json, "settings_icon_only", settingsIconOnly);
+            inputsIconOnly = bool(json, "inputs_icon_only", inputsIconOnly);
+            topButtonOrder = string(json, "top_button_order", topButtonOrder);
             libraryButton = bool(json, "library_button", libraryButton);
             wifiLabelWidth = integer(json, "wifi_label_width", wifiLabelWidth, 0, 300);
             alwaysShowNames = bool(json, "always_show_names", alwaysShowNames);
@@ -532,7 +547,7 @@ final class Config {
                 wallpapers, rotationMinutes, wallpaperDim, dockOpacity, wallpaperOrder, applied,
                 festival, inputKeycodes, appKeys, stockHomeRedirect, json == null ? Collections.emptyList() : raceCalendar(json), cinematic, ambientGlow, appGlow, fadeRows,
                 Math.max(0, idleClockMinutes), keyFilter, dockGlass, glowStyle, wallpaperCaptions, handleViewInputs, tileMenu, dockEvenPadding, cinematicDots, cinematicWhiteFocus, wifiStatusColor, cinematicScrim, cinematicArt, wallpaperMoods, gamepadPassthrough,
-                stayAwakeWhilePlaying, appOffPackages);
+                settingsIconOnly, inputsIconOnly, topButtonOrder, stayAwakeWhilePlaying, appOffPackages);
     }
 
     /**

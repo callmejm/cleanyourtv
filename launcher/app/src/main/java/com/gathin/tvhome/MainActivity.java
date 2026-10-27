@@ -655,8 +655,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             if (cfg.wifiLabelWidth > 0) btnWifi.setMaxWidth(Math.round(cfg.wifiLabelWidth * density));
             else makeIconOnly(btnWifi);
             makeIconOnly((TextView) btnSettings);
+        } else if (cfg.settingsIconOnly) {
+            makeIconOnly((TextView) btnSettings);
         }
         if (cfg.iconOnlyInputs) makeIconOnly((TextView) btnInputs);
+        if (cfg.inputsIconOnly) makeIconOnly((TextView) btnInputs);
+        applyTopButtonOrder(cfg.topButtonOrder);
         btnSettings.setOnLongClickListener(v -> {
             showSettingsMenu();
             return true;
@@ -673,11 +677,15 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 focusTile(lastFocused % COLUMNS);
                 return true;
             }
-            int firstButton = btnInputs.getVisibility() == View.VISIBLE ? R.id.btnInputs : firstTopButton().getId();
-            int leftButton = rtlMenuBar ? R.id.btnSettings : firstButton;
-            int rightButton = rtlMenuBar ? firstButton : R.id.btnSettings;
-            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) return v.getId() == leftButton;
-            return keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && v.getId() == rightButton;
+            View startEdge = visibleEdge(true);
+            View endEdge = visibleEdge(false);
+            if (rtlMenuBar) {
+                View swap = startEdge;
+                startEdge = endEdge;
+                endEdge = swap;
+            }
+            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) return v == startEdge;
+            return keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && v == endEdge;
         };
         btnInputs.setOnKeyListener(pillKeys);
         btnWifi.setOnKeyListener(pillKeys);
@@ -2135,6 +2143,40 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         libraryFocusPending = false;
         hideGlass();
         hideHero();
+    }
+
+    /** Leftmost or rightmost top pill that is actually shown, after top_button_order. */
+    private View visibleEdge(boolean fromStart) {
+        android.widget.LinearLayout bar = findViewById(R.id.topButtons);
+        int count = bar.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = bar.getChildAt(fromStart ? i : count - 1 - i);
+            if (child.getVisibility() == View.VISIBLE) return child;
+        }
+        return findViewById(R.id.btnSettings);
+    }
+
+    /** Puts the named pills in left-to-right order. An empty order leaves the layout as built. */
+    private void applyTopButtonOrder(String order) {
+        if (order == null || order.trim().isEmpty()) return;
+        android.widget.LinearLayout bar = findViewById(R.id.topButtons);
+        java.util.Map<String, View> named = new java.util.HashMap<>();
+        named.put("inputs", btnInputs);
+        named.put("wifi", btnWifi);
+        named.put("settings", findViewById(R.id.btnSettings));
+        named.put("reorder", btnReorder);
+        named.put("library", btnLibraryTop);
+        java.util.List<View> next = new java.util.ArrayList<>();
+        for (String part : order.split(",")) {
+            View button = named.get(part.trim().toLowerCase(java.util.Locale.US));
+            if (button != null && !next.contains(button)) next.add(button);
+        }
+        for (int i = 0; i < bar.getChildCount(); i++) {
+            View child = bar.getChildAt(i);
+            if (!next.contains(child)) next.add(child);
+        }
+        bar.removeAllViews();
+        for (View button : next) bar.addView(button);
     }
 
     /** The first top-bar button after Inputs that is shown: the network pill, Reorder, then Settings (always there). */
